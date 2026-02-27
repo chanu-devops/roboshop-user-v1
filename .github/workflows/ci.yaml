@@ -1,0 +1,26 @@
+name: User CI
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run a One line test
+        run: echo npm test
+
+  docker:
+    needs: test
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker Login for pushing image
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444206648334.dkr.ecr.us-east-1.amazonaws.com
+      - name: Docker Build
+        run: docker build -t 444206648334.dkr.ecr.us-east-1.amazonaws.com/user .
+      - name: Docker Push
+        run: docker push 444206648334.dkr.ecr.us-east-1.amazonaws.com/user
