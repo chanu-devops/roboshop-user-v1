@@ -10,4 +10,4 @@ jobs:
     uses: chanu-devops/reusable-CICD-yaml/.github/workflows/cicd.yaml@main
     with:
       app-type: nodejs
-      micro-services: User
+      micro-services: user
